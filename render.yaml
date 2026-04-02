@@ -1,21 +1,36 @@
 services:
+  # Static Site configuration for Vite Frontend
   - type: web
     name: vitacare-frontend
-    runtime: node
-    buildCommand: cd frontend && npm install && npm run build
-    startCommand: cd frontend && npm start
-    envVars:
-      - key: NODE_ENV
-        value: production
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    rootDir: frontend
     routes:
-      - path: /
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        value: https://vitacare-backend.onrender.com
 
+  # Node web service for Express + PostgreSQL Backend
   - type: web
     name: vitacare-backend
-    runtime: node
-    buildCommand: cd backend && npm install
-    startCommand: cd backend && npm start
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    rootDir: backend
     envVars:
       - key: NODE_ENV
         value: production
-    port: 3001
+      - key: DB_NAME
+        value: vitacare
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: 5432
