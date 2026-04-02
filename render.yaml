@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: vitacare-frontend
+    runtime: node
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+    routes:
+      - path: /
+        destination: /index.html
+
+  - type: web
+    name: vitacare-backend
+    runtime: node
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+    port: 3001
