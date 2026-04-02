@@ -9,7 +9,6 @@ services:
         value: production
     routes:
       - path: /
-        destination: /index.html
 
   - type: web
     name: vitacare-backend
